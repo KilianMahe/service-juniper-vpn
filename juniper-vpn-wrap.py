@@ -71,11 +71,12 @@ def hotp(key):
     return dec(hmac.new(key, counter, hashlib.sha256).digest(), 6)
 
 class juniper_vpn_wrapper(object):
-    def __init__(self, vpn_host, username, password, password2, oath, socks_port, host_checker):
+    def __init__(self, vpn_host, username, password, password2, role, oath, socks_port, host_checker):
         self.vpn_host = vpn_host
         self.username = username
         self.password = password
         self.password2 = password2
+        self.role = role
         self.oath = oath
         self.fixed_password = password is not None
         self.socks_port = socks_port
@@ -134,6 +135,8 @@ class juniper_vpn_wrapper(object):
                 return 'key'
             elif form.name == 'frmConfirmation':
                 return 'continue'
+            elif form.name == 'frmSelectRoles':
+                return 'selectRoles'
             else:
                 raise Exception('Unknown form type:', form.name)
         return 'tncc'
@@ -153,8 +156,13 @@ class juniper_vpn_wrapper(object):
                 self.action_continue()
             elif action == 'ncsvc':
                 self.action_ncsvc()
+            elif action == 'selectRoles':
+                self.action_selectroles()
 
             self.last_action = action
+            
+    def action_selectroles(self):
+        self.br.click_link(text=self.role)
 
     def action_tncc(self):
         # Run tncc host checker
@@ -442,6 +450,10 @@ if __name__ == "__main__":
         except:
             password2 = None
         try:
+            role = config.get('vpn', 'role')
+        except:
+            role = None
+        try:
             oath = config.get('vpn', 'oath')
         except:
             pass
@@ -461,6 +473,6 @@ if __name__ == "__main__":
         sys.exit(1)
 
     atexit.register(cleanup)
-    jvpn = juniper_vpn_wrapper(args.host, args.user, password, password2, oath, args.socks_port, args.host_checker)
+    jvpn = juniper_vpn_wrapper(args.host, args.user, password, password2, role, oath, args.socks_port, args.host_checker)
     jvpn.run()
 
