@@ -1,5 +1,7 @@
 # Juniper / Pulse Secure VPN client
 
+**FORK to add role**
+
 Juniper / Pulse Secure VPN client packaged as a Docker image, thus can be used anywhere with Docker (Linux, macOS, Windows).
 
 Uses the legacy Network Connect (`ncsvc`) client, which works on Linux.
