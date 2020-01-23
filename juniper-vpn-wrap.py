@@ -162,7 +162,8 @@ class juniper_vpn_wrapper(object):
             self.last_action = action
             
     def action_selectroles(self):
-        self.br.click_link(text=self.role)
+        linkRole = self.br.find_link(text=self.role)
+	self.br.follow_link(link=linkRole)
 	puts("Role cliked")
 
     def action_tncc(self):
