@@ -22,6 +22,7 @@ host = vpn.example.com
 username = joe
 password = secret
 password2 = push
+role = rolename
 socks_port = 1081
 host_checker = 1
 ```
