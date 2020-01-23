@@ -164,7 +164,6 @@ class juniper_vpn_wrapper(object):
     def action_selectroles(self):
         linkRole = self.br.find_link(text=self.role)
 	self.br.follow_link(link=linkRole)
-	puts("Role cliked")
 
     def action_tncc(self):
         # Run tncc host checker
